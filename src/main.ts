@@ -10,9 +10,9 @@ async function bootstrap() {
   console.log("PORT:", process.env.PORT);
   console.log("HOST:", process.env.HOST);
   console.log("DB_PORT:", process.env.DB_PORT);
-  console.log("DB_NAME:", process.env.DB_NAME);
-  console.log("DB_USERNAME:", process.env.DB_USERNAME);
-  console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
+  console.log("MYSQL_DB:", process.env.MYSQL_DB);
+  console.log("MYSQL_USER:", process.env.MYSQL_USER);
+  console.log("MYSQL_PASSWORD:", process.env.MYSQL_PASSWORD);
   console.log("MEDIA_STORAGE_URL:", process.env.MEDIA_STORAGE_URL);
   const app = await NestFactory.create(AppModule);
 
