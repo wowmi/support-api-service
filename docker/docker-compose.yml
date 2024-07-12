@@ -14,7 +14,7 @@ services:
       - nginx-proxy-network
       - server
 
-  support_nest:
+  node:
     image: node:18.18.0-alpine
     restart: "${RESTART_TYPE}"
     volumes:
