@@ -21,6 +21,7 @@ async function bootstrap() {
     .setDescription("Support API documentation")
     .setVersion("1.0")
     .addServer("https://prosperity-dev.onza.me/api/v1/support-service/")
+    .addServer("http://localhost:3900")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(SWAGGER_PREFIX, app, document);

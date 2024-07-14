@@ -5,20 +5,22 @@ import { Article } from "../article/articles.entity";
 @Entity({ name: "knowledge" })
 export class Knowledge {
   @PrimaryGeneratedColumn()
+  @ApiProperty({ example: 1 })
   id: number;
 
   @Column()
-  @ApiProperty()
+  @ApiProperty({ example: "Knowledge Title" })
   title: string;
 
   @Column()
-  @ApiProperty()
+  @ApiProperty({ example: "knowledge-icon.png" })
   icon: string;
 
   @Column()
-  @ApiProperty()
+  @ApiProperty({ example: "This is a description of the knowledge." })
   description: string;
 
   @OneToMany(() => Article, (article) => article.knowledge)
+  @ApiProperty({ type: () => [Article] })
   public articles: Article[];
 }
