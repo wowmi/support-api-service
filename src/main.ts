@@ -16,6 +16,14 @@ async function bootstrap() {
   console.log("MEDIA_STORAGE_URL:", process.env.MEDIA_STORAGE_URL);
   const app = await NestFactory.create(AppModule);
 
+  if (process.env.NODE_ENV == "dev") {
+    app.enableCors({
+      origin: "*",
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      allowedHeaders: "Content-Type, Accept, Authorization",
+    });
+  }
+
   const config = new DocumentBuilder()
     .setTitle("Support API")
     .setDescription("Support API documentation")
