@@ -3,19 +3,20 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
 } from "@nestjs/common";
-import {
-  CreateKnowledgeDto,
-  GetKnowledgeResponseDto,
-  KnowledgeResponseDto,
-} from "./knowledge.dto";
+import { CreateKnowledgeDto } from "./knowledge.dto";
 import { KnowledgeService } from "./knowledge.service";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  BaseResponse,
+  withArrayBaseResponse,
+  withSingleBaseResponse,
+} from "src/helper/base-response.dto";
+import { Knowledge } from "./knowledge.entity";
+@ApiTags("Knowledge")
 @Controller("knowledge")
 export class KnowledgeController {
   constructor(private readonly knowledgeService: KnowledgeService) {}
@@ -26,9 +27,11 @@ export class KnowledgeController {
   })
   @ApiResponse({
     status: 201,
-    type: KnowledgeResponseDto,
+    type: withSingleBaseResponse(Knowledge),
   })
-  async create(@Body() dto: CreateKnowledgeDto) {
+  async create(
+    @Body() dto: CreateKnowledgeDto,
+  ): Promise<BaseResponse<Knowledge>> {
     return await this.knowledgeService.create(dto);
   }
 
@@ -38,9 +41,9 @@ export class KnowledgeController {
   })
   @ApiResponse({
     status: 200,
-    type: [GetKnowledgeResponseDto],
+    type: withArrayBaseResponse(Knowledge),
   })
-  async getAll() {
+  async getAll(): Promise<BaseResponse<Knowledge[]>> {
     return await this.knowledgeService.getAll();
   }
 
@@ -50,9 +53,9 @@ export class KnowledgeController {
   })
   @ApiResponse({
     status: 200,
-    type: GetKnowledgeResponseDto,
+    type: withSingleBaseResponse(Knowledge),
   })
-  async getById(@Param("id") id: number) {
+  async getById(@Param("id") id: number): Promise<BaseResponse<Knowledge>> {
     return await this.knowledgeService.getById(id);
   }
 
@@ -62,9 +65,12 @@ export class KnowledgeController {
   })
   @ApiResponse({
     status: 200,
-    type: GetKnowledgeResponseDto,
+    type: withSingleBaseResponse(Knowledge),
   })
-  async update(@Param("id") id: number, @Body() dto: CreateKnowledgeDto) {
+  async update(
+    @Param("id") id: number,
+    @Body() dto: CreateKnowledgeDto,
+  ): Promise<BaseResponse<Knowledge>> {
     return await this.knowledgeService.update(id, dto);
   }
 

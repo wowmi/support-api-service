@@ -13,15 +13,15 @@ export class Article {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column("varchar", { length: 255 })
   @ApiProperty()
   title: string;
 
-  @Column()
+  @Column("varchar", { length: 255 })
   @ApiProperty()
   subtitle: string;
 
-  @Column()
+  @Column("text")
   @ApiProperty()
   description: string;
 
