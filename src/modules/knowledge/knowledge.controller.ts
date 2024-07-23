@@ -44,6 +44,8 @@ export class KnowledgeController {
     dto: CreateKnowledgeDto,
     @UploadedFile() icon: Express.Multer.File,
   ): Promise<BaseResponse<Knowledge>> {
+    console.log("Received DTO:", dto);
+    console.log("Received file:", icon);
     if (icon) {
       const containerName = process.env.AZURE_CONTAINER_NAME;
       const iconUrl = await this.fileService.uploadFile(icon, containerName);
