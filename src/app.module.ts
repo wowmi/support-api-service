@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { KnowledgeModule } from "./modules/knowledge/knowledge.module";
 import { ArticleModule } from "./modules/article/articles.module";
+import { AzureFileService } from "./modules/files/files.service";
 import * as path from "path";
 
 @Module({
@@ -28,5 +29,6 @@ import * as path from "path";
     KnowledgeModule,
     ArticleModule,
   ],
+  providers: [AzureFileService],
 })
 export class AppModule {}

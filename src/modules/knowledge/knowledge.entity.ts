@@ -8,7 +8,7 @@ export class Knowledge {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @Column()
+  @Column("text")
   @ApiProperty({ example: "Knowledge Title" })
   title: string;
 
@@ -16,7 +16,7 @@ export class Knowledge {
   @ApiProperty({ example: "knowledge-icon.png" })
   icon: string;
 
-  @Column()
+  @Column("text")
   @ApiProperty({ example: "This is a description of the knowledge." })
   description: string;
 
