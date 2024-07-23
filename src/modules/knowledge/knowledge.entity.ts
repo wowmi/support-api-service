@@ -13,7 +13,7 @@ export class Knowledge {
   title: string;
 
   @Column()
-  @ApiProperty({ example: "knowledge-icon.png" })
+  @ApiProperty({ example: "knowledge-icon.png", nullable: true })
   icon: string;
 
   @Column("text")

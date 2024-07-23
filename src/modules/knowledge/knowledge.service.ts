@@ -15,9 +15,10 @@ export class KnowledgeService {
     private readonly knowledgeRepo: Repository<Knowledge>,
   ) {}
   async create(dto: CreateKnowledgeDto, iconUrl?: string) {
-    const knowledge = this.knowledgeRepo.create(
-      iconUrl ? { ...dto, icon: iconUrl } : dto,
-    );
+    const knowledge = this.knowledgeRepo.create({
+      ...dto,
+      icon: iconUrl ? iconUrl : null, // Ensure the icon is set if URL is provided
+    });
     const createdKnowledge = await this.knowledgeRepo.save(knowledge);
     const ResponseDTO = withSingleBaseResponse(Knowledge);
     return new ResponseDTO(true, 200, "Fetched Successfully", createdKnowledge);
@@ -51,7 +52,10 @@ export class KnowledgeService {
   ): Promise<BaseResponse<Knowledge>> {
     await this.knowledgeRepo.update(
       { id },
-      iconUrl ? { ...dto, icon: iconUrl } : dto,
+      {
+        ...dto,
+        icon: iconUrl ? iconUrl : undefined,
+      },
     );
     const updatedKnowledge = await this.knowledgeRepo.findOne({
       where: { id },
