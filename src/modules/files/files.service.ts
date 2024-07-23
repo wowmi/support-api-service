@@ -22,15 +22,14 @@ export class AzureFileService {
 
   private async getBlobClient(imageName: string): Promise<BlockBlobClient> {
     const blobService = await this.getBlobServiceInstance();
-    const containerName = this.containerName;
+    const containerName = process.env.AZURE_CONTAINER_NAME;
     const containerClient = blobService.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(imageName);
 
     return blockBlobClient;
   }
 
-  public async uploadFile(file: Express.Multer.File, containerName: string) {
-    this.containerName = containerName;
+  public async uploadFile(file: Express.Multer.File) {
     const extension = file.originalname.split(".").pop();
     const file_name = uuid() + "." + extension;
     const blockBlobClient = await this.getBlobClient(file_name);
