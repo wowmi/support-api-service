@@ -12,8 +12,8 @@ export class Knowledge {
   @ApiProperty({ example: "Knowledge Title" })
   title: string;
 
-  @Column()
-  @ApiProperty({ example: "knowledge-icon.png", nullable: true })
+  @Column({ type: "varchar", length: 255, nullable: true })
+  @ApiProperty({ example: "knowledge-icon.png" })
   icon: string;
 
   @Column("text")
