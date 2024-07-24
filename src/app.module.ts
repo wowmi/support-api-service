@@ -23,6 +23,7 @@ import * as path from "path";
         database: configService.get<string>("MYSQL_DB"),
         entities: [path.join(process.cwd(), "dist/**/*.entity.js")],
         synchronize: true,
+        logging: true,
       }),
       inject: [ConfigService],
     }),

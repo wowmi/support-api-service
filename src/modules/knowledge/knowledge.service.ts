@@ -54,7 +54,7 @@ export class KnowledgeService {
       { id },
       {
         ...dto,
-        icon: iconUrl ? iconUrl : undefined,
+        icon: iconUrl ? iconUrl : null,
       },
     );
     const updatedKnowledge = await this.knowledgeRepo.findOne({
