@@ -50,25 +50,35 @@ export class KnowledgeService {
     dto: CreateKnowledgeDto,
     iconUrl?: string,
   ): Promise<BaseResponse<Knowledge>> {
-    if (iconUrl) {
-      await this.knowledgeRepo.update(
-        { id },
-        {
-          ...dto,
-          icon: iconUrl,
-        },
-      );
-    } else {
-      await this.knowledgeRepo.update({ id }, dto);
-    }
-    const updatedKnowledge = await this.knowledgeRepo.findOne({
+    const existingKnowledge = await this.knowledgeRepo.findOne({
       where: { id },
     });
-    if (!updatedKnowledge) {
+    if (!existingKnowledge) {
       throw new NotFoundException(`Knowledge with ID ${id} not found.`);
     }
+
+    const updatedValues = {
+      ...existingKnowledge,
+      ...dto,
+      icon: iconUrl ?? existingKnowledge.icon,
+    };
+
+    await this.knowledgeRepo.update(id, updatedValues);
+
+    const updatedKnowledgeRecord = await this.knowledgeRepo.findOne({
+      where: { id },
+    });
+    if (!updatedKnowledgeRecord) {
+      throw new NotFoundException(`Knowledge with ID ${id} not found.`);
+    }
+
     const ResponseDTO = withSingleBaseResponse(Knowledge);
-    return new ResponseDTO(true, 201, "Fetched Successfully", updatedKnowledge);
+    return new ResponseDTO(
+      true,
+      201,
+      "Fetched Successfully",
+      updatedKnowledgeRecord,
+    );
   }
 
   async delete(id: number): Promise<void> {
