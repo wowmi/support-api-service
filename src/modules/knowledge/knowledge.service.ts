@@ -50,13 +50,17 @@ export class KnowledgeService {
     dto: CreateKnowledgeDto,
     iconUrl?: string,
   ): Promise<BaseResponse<Knowledge>> {
-    await this.knowledgeRepo.update(
-      { id },
-      {
-        ...dto,
-        icon: iconUrl ? iconUrl : null,
-      },
-    );
+    if (iconUrl) {
+      await this.knowledgeRepo.update(
+        { id },
+        {
+          ...dto,
+          icon: iconUrl,
+        },
+      );
+    } else {
+      await this.knowledgeRepo.update({ id }, dto);
+    }
     const updatedKnowledge = await this.knowledgeRepo.findOne({
       where: { id },
     });
