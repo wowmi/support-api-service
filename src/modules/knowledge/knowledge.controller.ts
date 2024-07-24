@@ -85,6 +85,7 @@ export class KnowledgeController {
     status: 200,
     type: withSingleBaseResponse(Knowledge),
   })
+  @UseInterceptors(FileInterceptor("icon"))
   async update(
     @Param("id") id: number,
     @Body() dto: CreateKnowledgeDto,
