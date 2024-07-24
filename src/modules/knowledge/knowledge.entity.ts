@@ -20,7 +20,9 @@ export class Knowledge {
   @ApiProperty({ example: "This is a description of the knowledge." })
   description: string;
 
-  @OneToMany(() => Article, (article) => article.knowledge)
+  @OneToMany(() => Article, (article) => article.knowledge, {
+    onDelete: "CASCADE",
+  })
   @ApiProperty({ type: () => [Article] })
   public articles: Article[];
 }
