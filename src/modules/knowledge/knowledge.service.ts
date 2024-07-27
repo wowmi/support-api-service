@@ -8,13 +8,19 @@ import {
   withArrayBaseResponse,
   withSingleBaseResponse,
 } from "src/helper/base-response.dto";
+import { AzureFileService } from "../files/files.service";
 
 export class KnowledgeService {
   constructor(
     @InjectRepository(Knowledge)
     private readonly knowledgeRepo: Repository<Knowledge>,
+    private readonly fileService: AzureFileService,
   ) {}
-  async create(dto: CreateKnowledgeDto, iconUrl?: string) {
+  async create(dto: CreateKnowledgeDto, icon?: Express.Multer.File) {
+    let iconUrl = null;
+    if (icon) {
+      iconUrl = await this.fileService.uploadFile(icon);
+    }
     const knowledge = this.knowledgeRepo.create({
       ...dto,
       icon: iconUrl ? iconUrl : null, // Ensure the icon is set if URL is provided
@@ -48,13 +54,21 @@ export class KnowledgeService {
   async update(
     id: number,
     dto: CreateKnowledgeDto,
-    iconUrl?: string,
+    icon?: Express.Multer.File,
   ): Promise<BaseResponse<Knowledge>> {
+    let iconUrl = null;
     const existingKnowledge = await this.knowledgeRepo.findOne({
       where: { id },
     });
     if (!existingKnowledge) {
       throw new NotFoundException(`Knowledge with ID ${id} not found.`);
+    }
+
+    if (icon && existingKnowledge.icon) {
+      await this.fileService.deleteFile(existingKnowledge.icon); // Delete old image
+    }
+    if (icon) {
+      iconUrl = await this.fileService.uploadFile(icon);
     }
 
     const updatedValues = {
@@ -82,6 +96,15 @@ export class KnowledgeService {
   }
 
   async delete(id: number): Promise<void> {
+    const knowledge = await this.knowledgeRepo.findOne({ where: { id } });
+    if (!knowledge) {
+      throw new NotFoundException(`Knowledge with ID ${id} not found.`);
+    }
+
+    if (knowledge.icon) {
+      await this.fileService.deleteFile(knowledge.icon);
+    }
+
     const deleteResult = await this.knowledgeRepo.delete({ id });
     if (!deleteResult.affected) {
       throw new NotFoundException(`Knowledge with ID ${id} not found.`);

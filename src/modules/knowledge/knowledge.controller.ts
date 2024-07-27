@@ -47,8 +47,7 @@ export class KnowledgeController {
     console.log("Received DTO:", dto);
     console.log("Received file:", icon);
     if (icon) {
-      const iconUrl = await this.fileService.uploadFile(icon);
-      return await this.knowledgeService.create(dto, iconUrl);
+      return await this.knowledgeService.create(dto, icon);
     }
     return await this.knowledgeService.create(dto);
   }
@@ -92,8 +91,7 @@ export class KnowledgeController {
     @UploadedFile() icon?: Express.Multer.File,
   ): Promise<BaseResponse<Knowledge>> {
     if (icon) {
-      const iconUrl = await this.fileService.uploadFile(icon);
-      return this.knowledgeService.update(id, dto, iconUrl);
+      return this.knowledgeService.update(id, dto, icon);
     }
     return await this.knowledgeService.update(id, dto);
   }

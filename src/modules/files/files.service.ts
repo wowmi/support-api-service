@@ -38,4 +38,10 @@ export class AzureFileService {
 
     return fileUrl;
   }
+
+  public async deleteFile(fileUrl: string) {
+    const blobName = fileUrl.split("/").pop();
+    const blockBlobClient = await this.getBlobClient(blobName);
+    await blockBlobClient.deleteIfExists();
+  }
 }
