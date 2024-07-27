@@ -8,14 +8,23 @@ import {
   withArrayBaseResponse,
   withSingleBaseResponse,
 } from "src/helper/base-response.dto";
+import { AzureFileService } from "../files/files.service";
 
 export class KnowledgeService {
   constructor(
     @InjectRepository(Knowledge)
     private readonly knowledgeRepo: Repository<Knowledge>,
+    private readonly fileService: AzureFileService,
   ) {}
-  async create(dto: CreateKnowledgeDto) {
-    const knowledge = this.knowledgeRepo.create(dto);
+  async create(dto: CreateKnowledgeDto, icon?: Express.Multer.File) {
+    let iconUrl = null;
+    if (icon) {
+      iconUrl = await this.fileService.uploadFile(icon);
+    }
+    const knowledge = this.knowledgeRepo.create({
+      ...dto,
+      icon: iconUrl ? iconUrl : null, // Ensure the icon is set if URL is provided
+    });
     const createdKnowledge = await this.knowledgeRepo.save(knowledge);
     const ResponseDTO = withSingleBaseResponse(Knowledge);
     return new ResponseDTO(true, 200, "Fetched Successfully", createdKnowledge);
@@ -45,19 +54,57 @@ export class KnowledgeService {
   async update(
     id: number,
     dto: CreateKnowledgeDto,
+    icon?: Express.Multer.File,
   ): Promise<BaseResponse<Knowledge>> {
-    await this.knowledgeRepo.update({ id }, dto);
-    const updatedKnowledge = await this.knowledgeRepo.findOne({
+    let iconUrl = null;
+    const existingKnowledge = await this.knowledgeRepo.findOne({
       where: { id },
     });
-    if (!updatedKnowledge) {
+    if (!existingKnowledge) {
       throw new NotFoundException(`Knowledge with ID ${id} not found.`);
     }
+
+    if (icon && existingKnowledge.icon) {
+      await this.fileService.deleteFile(existingKnowledge.icon); // Delete old image
+    }
+    if (icon) {
+      iconUrl = await this.fileService.uploadFile(icon);
+    }
+
+    const updatedValues = {
+      ...existingKnowledge,
+      ...dto,
+      icon: iconUrl ?? existingKnowledge.icon,
+    };
+
+    await this.knowledgeRepo.update(id, updatedValues);
+
+    const updatedKnowledgeRecord = await this.knowledgeRepo.findOne({
+      where: { id },
+    });
+    if (!updatedKnowledgeRecord) {
+      throw new NotFoundException(`Knowledge with ID ${id} not found.`);
+    }
+
     const ResponseDTO = withSingleBaseResponse(Knowledge);
-    return new ResponseDTO(true, 201, "Fetched Successfully", updatedKnowledge);
+    return new ResponseDTO(
+      true,
+      201,
+      "Fetched Successfully",
+      updatedKnowledgeRecord,
+    );
   }
 
   async delete(id: number): Promise<void> {
+    const knowledge = await this.knowledgeRepo.findOne({ where: { id } });
+    if (!knowledge) {
+      throw new NotFoundException(`Knowledge with ID ${id} not found.`);
+    }
+
+    if (knowledge.icon) {
+      await this.fileService.deleteFile(knowledge.icon);
+    }
+
     const deleteResult = await this.knowledgeRepo.delete({ id });
     if (!deleteResult.affected) {
       throw new NotFoundException(`Knowledge with ID ${id} not found.`);

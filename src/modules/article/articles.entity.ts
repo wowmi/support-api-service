@@ -37,7 +37,9 @@ export class Article {
     this.images = JSON.stringify(links);
   }
 
-  @ManyToOne(() => Knowledge, (knowledge) => knowledge.articles)
+  @ManyToOne(() => Knowledge, (knowledge) => knowledge.articles, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "knowledge_id" })
   public knowledge: Knowledge;
 }

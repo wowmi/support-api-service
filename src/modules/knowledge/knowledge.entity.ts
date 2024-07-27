@@ -8,19 +8,21 @@ export class Knowledge {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @Column()
+  @Column("text")
   @ApiProperty({ example: "Knowledge Title" })
   title: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 255, nullable: true })
   @ApiProperty({ example: "knowledge-icon.png" })
   icon: string;
 
-  @Column()
+  @Column("text")
   @ApiProperty({ example: "This is a description of the knowledge." })
   description: string;
 
-  @OneToMany(() => Article, (article) => article.knowledge)
+  @OneToMany(() => Article, (article) => article.knowledge, {
+    onDelete: "CASCADE",
+  })
   @ApiProperty({ type: () => [Article] })
   public articles: Article[];
 }
