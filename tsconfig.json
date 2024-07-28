@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {},
-    "types": ["node", "multer"]
+    "types": ["node", "multer", "jest"]
   },
   "watchOptions": {
     "watchFile": "dynamicPriorityPolling",

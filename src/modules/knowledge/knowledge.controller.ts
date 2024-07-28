@@ -20,15 +20,10 @@ import {
 import { Knowledge } from "./knowledge.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Express } from "express";
-import { AzureFileService } from "../files/files.service";
-// import { Multer } from "multer";
 @ApiTags("Knowledge")
 @Controller("knowledge")
 export class KnowledgeController {
-  constructor(
-    private readonly knowledgeService: KnowledgeService,
-    private readonly fileService: AzureFileService,
-  ) {}
+  constructor(private readonly knowledgeService: KnowledgeService) {}
 
   @Post()
   @ApiOperation({

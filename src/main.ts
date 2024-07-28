@@ -14,6 +14,7 @@ async function bootstrap() {
   console.log("MYSQL_USER:", process.env.MYSQL_USER);
   console.log("MYSQL_PASSWORD:", process.env.MYSQL_PASSWORD);
   console.log("MEDIA_STORAGE_URL:", process.env.MEDIA_STORAGE_URL);
+  console.log(`http://${HOST}:${PORT}/${SWAGGER_PREFIX}`);
   const app = await NestFactory.create(AppModule);
 
   if (process.env.NODE_ENV == "dev") {
@@ -30,7 +31,7 @@ async function bootstrap() {
     .setDescription("Support API documentation")
     .setVersion("1.0")
     .addServer("https://prosperity-dev.onza.me/api/v1/support-service/")
-    .addServer("http://localhost:3900")
+    .addServer("http://localhost:4000")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(SWAGGER_PREFIX, app, document);
