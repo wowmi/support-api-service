@@ -28,9 +28,9 @@ export class MarketUpdateService {
   async createMarketUpdateTask(
     createMarketUpdateTaskDto: CreateMarketUpdateTaskDto,
   ): Promise<MarketUpdateTask> {
-    const marketUpdate = await this.marketUpdateRepository.findOne(
-      createMarketUpdateTaskDto.market_update_id,
-    );
+    const marketUpdate = await this.marketUpdateRepository.findOne({
+      where: { id: createMarketUpdateTaskDto.market_update_id },
+    });
     const marketUpdateTask = this.marketUpdateTaskRepository.create({
       ...createMarketUpdateTaskDto,
       marketUpdate,
