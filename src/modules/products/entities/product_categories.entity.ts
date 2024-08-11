@@ -11,8 +11,10 @@ export class ProductCategory {
 
   @Column("text")
   @ApiProperty({ example: "Mortgage Products" })
-  category_name: string;
+  name: string;
 
-  @OneToMany(() => Product, (product) => product.category)
+  @OneToMany(() => Product, (product) => product.category, {
+    onDelete: "SET NULL",
+  })
   products: Product[];
 }

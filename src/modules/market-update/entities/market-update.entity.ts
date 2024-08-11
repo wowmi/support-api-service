@@ -7,13 +7,13 @@ export class MarketUpdate {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column("text")
   title: string;
 
-  @Column({ type: "date" })
+  @Column("datetime")
   _date: string;
 
-  @Column()
+  @Column("text")
   description: string;
 
   @OneToMany(() => MarketUpdateTask, (task) => task.marketUpdate)

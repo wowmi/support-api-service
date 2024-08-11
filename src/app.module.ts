@@ -5,7 +5,7 @@ import { KnowledgeModule } from "./modules/knowledge/knowledge.module";
 import { ArticleModule } from "./modules/article/articles.module";
 import { AzureFileService } from "./modules/files/files.service";
 import { ProductsModule } from "./modules/products/products.module";
-import { MarketUpdateModule } from './market-update/market-update.module';
+import { MarketUpdateModule } from "./modules/market-update/market-update.module";
 import * as path from "path";
 
 @Module({

@@ -13,5 +13,5 @@ export class CreateCategoryDto {
   @ApiProperty({ example: faker.lorem.words(2) })
   @IsString()
   @IsNotEmpty()
-  category_name: string;
+  name: string;
 }

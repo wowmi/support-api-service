@@ -2,7 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Knowledge } from "./knowledge.entity";
 import { Repository } from "typeorm";
 import { CreateKnowledgeDto } from "./knowledge.dto";
-import { NotFoundException } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
 import {
   BaseResponse,
   withArrayBaseResponse,
@@ -14,6 +14,7 @@ export class KnowledgeService {
   constructor(
     @InjectRepository(Knowledge)
     private readonly knowledgeRepo: Repository<Knowledge>,
+    @Inject()
     private readonly fileService: AzureFileService,
   ) {}
   async create(dto: CreateKnowledgeDto, icon?: Express.Multer.File) {

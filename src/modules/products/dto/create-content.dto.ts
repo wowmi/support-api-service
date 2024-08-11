@@ -1,0 +1,44 @@
+import { IsString, IsOptional, IsUrl, IsUUID } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { faker } from "@faker-js/faker";
+
+export class CreateContentDto {
+  @ApiProperty({ example: faker.string.uuid() })
+  @IsOptional()
+  @IsUUID()
+  id: string;
+
+  @ApiProperty({ example: faker.lorem.words(3) })
+  @IsString()
+  title: string;
+
+  @ApiProperty({ example: faker.lorem.sentences(2), required: false })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @ApiProperty({ example: faker.lorem.sentences(2), required: false })
+  @IsOptional()
+  @IsString()
+  script?: string;
+
+  @ApiProperty({ example: faker.lorem.sentences(2), required: false })
+  @IsOptional()
+  @IsString()
+  instagram_body?: string;
+
+  @ApiProperty({ example: faker.lorem.sentences(2), required: false })
+  @IsOptional()
+  @IsString()
+  fb_linkedin_body?: string;
+
+  @ApiProperty({ example: faker.lorem.sentences(2), required: false })
+  @IsOptional()
+  @IsUrl()
+  link_concatenated?: string;
+
+  @ApiProperty({ example: faker.string.uuid(), required: false })
+  @IsOptional()
+  @IsUUID()
+  content_id?: string;
+}
