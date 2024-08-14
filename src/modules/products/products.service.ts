@@ -80,26 +80,19 @@ export class ProductsService {
     return this.productsRepository.delete({ id });
   }
 
-  createCategory(dto: CreateCategoryDto): Promise<ProductCategory> {
+  async createCategory(
+    dto: CreateCategoryDto,
+    image?: Express.Multer.File,
+  ): Promise<ProductCategory> {
     const category = this.categoriesRepository.create(dto);
+    if (image) {
+      category.image = await this.fileService.uploadFile(image);
+    }
     return this.categoriesRepository.save(category);
   }
 
   deleteCategory(id: string) {
     return this.categoriesRepository.delete({ id });
-  }
-
-  async updateCategory(
-    id: string,
-    dto: CreateCategoryDto,
-  ): Promise<ProductCategory> {
-    const existingCategory = await this.categoriesRepository.findOne({
-      where: { id },
-    });
-    if (existingCategory) {
-      Object.assign(existingCategory, dto);
-      return this.categoriesRepository.save(existingCategory);
-    }
   }
 
   async getProductCategories(): Promise<ProductCategory[]> {
@@ -122,7 +115,7 @@ export class ProductsService {
     );
   }
 
-  async updateProductContent(
+  async createProductContent(
     id: string,
     updateContentDto: CreateContentDto,
     image?: Express.Multer.File,
@@ -161,5 +154,55 @@ export class ProductsService {
     await this.contentRepository.save(content);
 
     return plainToClass(ProductContent, content);
+  }
+
+  async updateProductContent(
+    contentId: string,
+    updateContentDto: CreateContentDto,
+    image?: Express.Multer.File,
+  ): Promise<ProductContent> {
+    const content = await this.contentRepository.findOne({
+      where: { id: contentId },
+    });
+    if (!content) {
+      throw new NotFoundException(`Content with ID ${contentId} not found`);
+    }
+
+    if (image) {
+      if (content.image) {
+        await this.fileService.deleteFile(content.image);
+      }
+      const imageUrl = await this.fileService.uploadFile(image);
+      content.image = imageUrl;
+    }
+
+    Object.assign(content, updateContentDto);
+    await this.contentRepository.save(content);
+
+    return plainToClass(ProductContent, content);
+  }
+
+  async updateCategory(
+    id: string,
+    updateCategoryDto: CreateCategoryDto,
+    image?: Express.Multer.File,
+  ): Promise<ProductCategory> {
+    const category = await this.categoriesRepository.findOne({ where: { id } });
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
+
+    if (image) {
+      if (category.image) {
+        await this.fileService.deleteFile(category.image);
+      }
+      const imageUrl = await this.fileService.uploadFile(image);
+      category.image = imageUrl;
+    }
+
+    Object.assign(category, updateCategoryDto);
+    await this.categoriesRepository.save(category);
+
+    return plainToClass(ProductCategory, category);
   }
 }

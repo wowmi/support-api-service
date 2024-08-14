@@ -13,6 +13,10 @@ export class ProductCategory {
   @ApiProperty({ example: "Mortgage Products" })
   name: string;
 
+  @Column("text", { nullable: true })
+  @ApiProperty({ example: faker.internet.url() })
+  image?: string;
+
   @OneToMany(() => Product, (product) => product.category, {
     onDelete: "SET NULL",
   })

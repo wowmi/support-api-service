@@ -9,6 +9,7 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  Put,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -128,6 +129,7 @@ export class ProductsController {
   }
 
   @Post("/category")
+  @UseInterceptors(FileInterceptor("image"))
   @ApiOperation({
     summary: "Create product category",
     description: "Creates a new product category.",
@@ -137,11 +139,63 @@ export class ProductsController {
     description: "The product category has been successfully created.",
     type: ProductCategory,
   })
-  createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.productsService.createCategory(createCategoryDto);
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        image: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
+  createCategory(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() createCategoryDto: CreateCategoryDto,
+  ) {
+    return this.productsService.createCategory(createCategoryDto, image);
   }
 
-  @Patch(":id")
+  @Put("/category/:category_id")
+  @UseInterceptors(FileInterceptor("image"))
+  @ApiOperation({
+    summary: "Update product category",
+    description: "Updates product category.",
+  })
+  @ApiResponse({
+    status: 201,
+    description: "The product category has been successfully created.",
+    type: ProductCategory,
+  })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        image: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
+  updateCategory(
+    @UploadedFile() image: Express.Multer.File,
+    @Param("category_id") categoryId: string,
+    @Body() createCategoryDto: CreateCategoryDto,
+  ) {
+    return this.productsService.updateCategory(
+      categoryId,
+      createCategoryDto,
+      image,
+    );
+  }
+
+  @Put(":id")
   @ApiOperation({
     summary: "Update product",
     description: "Updates an existing product by its ID.",
@@ -196,6 +250,48 @@ export class ProductsController {
     return this.productsService.deleteCategory(id);
   }
 
+  @Post("content/:product_id")
+  @UseInterceptors(FileInterceptor("image"))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        image: {
+          type: "string",
+          format: "binary",
+        },
+        script: { type: "string" },
+        instagram_body: { type: "string" },
+        fb_linkedin_body: { type: "string" },
+        link_concatenated: { type: "string" },
+        content_id: { type: "string" },
+      },
+    },
+  })
+  @ApiOperation({
+    summary: "Create Product Content",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "The content has been successfully updated.",
+    type: ProductContent,
+  })
+  @ApiParam({ name: "id", description: "ID of the product" })
+  createProductContent(
+    @Param("product_id") id: string,
+    @Body() updateContentDto: CreateContentDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ) {
+    return this.productsService.createProductContent(
+      id,
+      updateContentDto,
+      image,
+    );
+  }
+
   @Post("content/:id")
   @UseInterceptors(FileInterceptor("image"))
   @ApiConsumes("multipart/form-data")
@@ -231,7 +327,7 @@ export class ProductsController {
     @Body() updateContentDto: CreateContentDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
-    return this.productsService.updateProductContent(
+    return this.productsService.createProductContent(
       id,
       updateContentDto,
       image,
