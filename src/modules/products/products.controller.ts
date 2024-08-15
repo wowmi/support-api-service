@@ -292,7 +292,7 @@ export class ProductsController {
     );
   }
 
-  @Post("content/:id")
+  @Put("content/:content_id")
   @UseInterceptors(FileInterceptor("image"))
   @ApiConsumes("multipart/form-data")
   @ApiBody({
@@ -314,7 +314,7 @@ export class ProductsController {
     },
   })
   @ApiOperation({
-    summary: "Update Product Content",
+    summary: "Create Product Content",
   })
   @ApiResponse({
     status: 200,
@@ -327,7 +327,7 @@ export class ProductsController {
     @Body() updateContentDto: CreateContentDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
-    return this.productsService.createProductContent(
+    return this.productsService.updateProductContent(
       id,
       updateContentDto,
       image,
