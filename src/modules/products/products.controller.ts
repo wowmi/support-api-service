@@ -268,6 +268,7 @@ export class ProductsController {
         fb_linkedin_body: { type: "string" },
         link_concatenated: { type: "string" },
         content_id: { type: "string" },
+        order: { type: "string" },
       },
     },
   })
@@ -310,18 +311,19 @@ export class ProductsController {
         fb_linkedin_body: { type: "string" },
         link_concatenated: { type: "string" },
         content_id: { type: "string" },
+        order: { type: "string" },
       },
     },
   })
   @ApiOperation({
-    summary: "Create Product Content",
+    summary: "Update Product Content",
   })
   @ApiResponse({
     status: 200,
     description: "The content has been successfully updated.",
     type: ProductContent,
   })
-  @ApiParam({ name: "id", description: "ID of the product" })
+  @ApiParam({ name: "id", description: "ID of the content" })
   updateProductContent(
     @Param("id") id: string,
     @Body() updateContentDto: CreateContentDto,
