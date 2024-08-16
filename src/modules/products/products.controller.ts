@@ -280,7 +280,6 @@ export class ProductsController {
     description: "The content has been successfully updated.",
     type: ProductContent,
   })
-  @ApiParam({ name: "id", description: "ID of the product" })
   createProductContent(
     @Param("product_id") id: string,
     @Body() updateContentDto: CreateContentDto,
@@ -323,9 +322,8 @@ export class ProductsController {
     description: "The content has been successfully updated.",
     type: ProductContent,
   })
-  @ApiParam({ name: "id", description: "ID of the content" })
   updateProductContent(
-    @Param("id") id: string,
+    @Param("content_id") id: string,
     @Body() updateContentDto: CreateContentDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
