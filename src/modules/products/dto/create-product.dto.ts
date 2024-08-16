@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   ArrayNotEmpty,
   IsArray,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -25,4 +26,11 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @ApiProperty({
+    example: 1,
+    description: "Order in which item will be displayed on the list",
+  })
+  @IsInt()
+  order: number;
 }

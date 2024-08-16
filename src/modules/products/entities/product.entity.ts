@@ -47,4 +47,8 @@ export class Product {
   @Column("text", { nullable: true })
   @ApiProperty({ example: faker.lorem.words(3) })
   description: string;
+
+  @Column("int")
+  @ApiProperty({ example: 1 })
+  order: number;
 }
