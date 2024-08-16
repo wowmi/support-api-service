@@ -56,4 +56,8 @@ export class ProductContent {
   @Column("text", { nullable: true })
   @ApiProperty({ example: faker.string.uuid() })
   content_id: string;
+
+  @Column("int")
+  @ApiProperty({ example: 1 })
+  order: number;
 }

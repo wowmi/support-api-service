@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsUrl, IsUUID } from "class-validator";
+import { IsString, IsOptional, IsUrl, IsUUID, IsInt } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from "@faker-js/faker";
 
@@ -41,4 +41,8 @@ export class CreateContentDto {
   @IsOptional()
   @IsUUID()
   content_id?: string;
+
+  @ApiProperty({ example: 1 })
+  @IsInt()
+  order: number;
 }
