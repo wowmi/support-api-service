@@ -108,6 +108,7 @@ export class ProductsController {
       properties: {
         title: { type: "string" },
         description: { type: "string" },
+        order: { type: "string" },
         image: {
           type: "string",
           format: "binary",
@@ -196,6 +197,7 @@ export class ProductsController {
   }
 
   @Put(":id")
+  @UseInterceptors(FileInterceptor("image"))
   @ApiOperation({
     summary: "Update product",
     description: "Updates an existing product by its ID.",
@@ -204,16 +206,32 @@ export class ProductsController {
     name: "id",
     description: "ID of the product",
   })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        order: { type: "string" },
+        image: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 200,
     description: "The product has been successfully updated.",
     type: Product,
   })
   updateProduct(
+    @UploadedFile() image: Express.Multer.File,
     @Param("id") id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productsService.updateProduct(id, updateProductDto);
+    return this.productsService.updateProduct(id, updateProductDto, image);
   }
 
   @Delete(":id")
