@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { MarketUpdate } from "./market-update.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from "@faker-js/faker";
@@ -35,6 +35,9 @@ export class MarketUpdateTask {
   @Column("text")
   link_concatenated: string;
 
-  @ManyToOne(() => MarketUpdate, (marketUpdate) => marketUpdate.tasks)
+  @ManyToOne(() => MarketUpdate, (marketUpdate) => marketUpdate.tasks, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "market_update_id" })
   marketUpdate: MarketUpdate;
 }

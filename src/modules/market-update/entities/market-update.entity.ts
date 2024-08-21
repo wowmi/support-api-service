@@ -28,7 +28,6 @@ export class MarketUpdate {
 
   @OneToMany(() => MarketUpdateTask, (task) => task.marketUpdate, {
     cascade: true,
-    onDelete: "CASCADE",
   })
   tasks: MarketUpdateTask[];
 }
