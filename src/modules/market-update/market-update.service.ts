@@ -71,6 +71,28 @@ export class MarketUpdateService {
     return this.marketUpdateTaskRepository.save(marketUpdateTask);
   }
 
-  updateTask(id: string, dto: UpdateMarketUpdateTaskDto) {}
-  deleteTask(id: string) {}
+  async getTaskByMarketUpdateId(id: string): Promise<MarketUpdateTask[]> {
+    return this.marketUpdateTaskRepository.find({
+      where: { marketUpdate: { id } },
+    });
+  }
+
+  async updateTask(id: string, dto: UpdateMarketUpdateTaskDto): Promise<MarketUpdateTask> {
+    const task = await this.marketUpdateTaskRepository.findOne({ where: { id } });
+
+    if (task) {
+      Object.assign(task, dto);
+      return this.marketUpdateTaskRepository.save(task);
+    }
+
+    throw new NotFoundException(`Market update task with ID ${id} not found`);
+  }
+
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.marketUpdateTaskRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Market update task with ID ${id} not found`);
+    }
+  }
 }

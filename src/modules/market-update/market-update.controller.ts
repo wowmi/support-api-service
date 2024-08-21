@@ -117,5 +117,10 @@ export class MarketUpdateController {
     return this.marketUpdateService.deleteTask(id);
   }
 
-  // getTasksByMarketUpdateId() {}
+  @Delete("tasks/:market_update_id")
+  @ApiOperation({ summary: "Get Tasks By Market Update ID" })
+  @ApiResponse({ status: 201, type: MarketUpdateTask, isArray: true })
+  getTasksByMarketUpdateId(@Param("market_update_id", ParseUUIDPipe) id: string) {
+    return this.marketUpdateService.getTaskByMarketUpdateId(id);
+  }
 }
