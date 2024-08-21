@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MarketUpdateController } from './market-update.controller';
-import { MarketUpdateService } from './market-update.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { MarketUpdateController } from "./market-update.controller";
+import { MarketUpdateService } from "./market-update.service";
 
-describe('MarketUpdateController', () => {
+describe("MarketUpdateController", () => {
   let controller: MarketUpdateController;
 
   beforeEach(async () => {
@@ -14,7 +14,7 @@ describe('MarketUpdateController', () => {
     controller = module.get<MarketUpdateController>(MarketUpdateController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

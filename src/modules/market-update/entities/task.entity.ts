@@ -1,33 +1,38 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { MarketUpdate } from "./market-update.entity";
+import { ApiProperty } from "@nestjs/swagger";
+import { faker } from "@faker-js/faker";
 
 @Entity()
 export class MarketUpdateTask {
   @PrimaryGeneratedColumn("uuid")
+  @ApiProperty({ example: faker.string.uuid() })
   id: string;
 
   @Column("uuid")
+  @ApiProperty({ example: faker.string.uuid() })
   content_id: string;
 
-  @Column()
+  @Column("text")
+  @ApiProperty({ example: "Video" })
   type: string;
 
-  @Column()
+  @Column("text")
   script: string;
 
-  @Column()
+  @Column("text")
   title: string;
 
-  @Column()
+  @Column("text")
   week_description: string;
 
-  @Column()
+  @Column("text")
   instagram_body: string;
 
-  @Column()
+  @Column("text")
   fb_linkedin_body: string;
 
-  @Column()
+  @Column("text")
   link_concatenateated: string;
 
   @ManyToOne(() => MarketUpdate, (marketUpdate) => marketUpdate.tasks)
