@@ -33,7 +33,7 @@ export class MarketUpdateTask {
   fb_linkedin_body: string;
 
   @Column("text")
-  link_concatenateated: string;
+  link_concatenated: string;
 
   @ManyToOne(() => MarketUpdate, (marketUpdate) => marketUpdate.tasks)
   marketUpdate: MarketUpdate;

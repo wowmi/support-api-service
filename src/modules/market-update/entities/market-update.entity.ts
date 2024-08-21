@@ -1,4 +1,3 @@
-// src/market-update/entities/market-update.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { MarketUpdateTask } from "./task.entity";
 import { ApiProperty } from "@nestjs/swagger";
@@ -27,6 +26,9 @@ export class MarketUpdate {
   @Column("bool", { name: "is_archived", default: false })
   isArchived: boolean;
 
-  @OneToMany(() => MarketUpdateTask, (task) => task.marketUpdate)
+  @OneToMany(() => MarketUpdateTask, (task) => task.marketUpdate, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   tasks: MarketUpdateTask[];
 }
