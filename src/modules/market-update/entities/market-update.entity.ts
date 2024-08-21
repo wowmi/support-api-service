@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { MarketUpdateTask } from "./task.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from "@faker-js/faker";
+import { Transform } from "class-transformer";
 
 @Entity()
 export class MarketUpdate {
@@ -15,6 +16,7 @@ export class MarketUpdate {
   title: string;
 
   @Column("date")
+  @Transform(({ value }) => (value ? value.toISOString().split("T")[0] : value))
   @ApiProperty({ example: "2012-12-31" })
   _date: string;
 
