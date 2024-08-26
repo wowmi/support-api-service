@@ -20,7 +20,7 @@ import { UpdateMarketUpdateDto } from "./dto/update-market-update.dto";
 import { MarketUpdateTask } from "./entities/task.entity";
 import { UpdateMarketUpdateTaskDto } from "./dto/update-task.dto";
 
-@ApiTags("market-update")
+@ApiTags("Market Update")
 @Controller("market-update")
 export class MarketUpdateController {
   constructor(private readonly marketUpdateService: MarketUpdateService) {}

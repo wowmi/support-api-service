@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Relation,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from "@faker-js/faker";
 import { Product } from "./product.entity";
@@ -22,7 +15,7 @@ export class ProductContent {
   })
   @JoinColumn({ name: "product_id" })
   @ApiProperty({ example: faker.string.uuid() })
-  @Exclude() // Exclude this property from serialization to avoid circular dependency
+  @Exclude()
   product: Relation<Product>;
 
   @Column("text")

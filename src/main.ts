@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { ValidationPipe } from "@nestjs/common";
 require("dotenv").config();
 const { PORT, HOST, SWAGGER_PREFIX } = process.env;
 
@@ -36,19 +37,24 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(SWAGGER_PREFIX, app, document);
 
-  app.enableCors({
-    origin: "http://localhost:4201", // Allows all origins
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    allowedHeaders: "*",
-    // credentials: true,
-  });
+  // app.enableCors({
+  //   origin: "http://localhost:4201", // Allows all origins
+  //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  //   allowedHeaders: "*",
+  // });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   await app.listen(PORT, () => {
     console.log(`🚀 Application running at port: ${PORT}`);
 
-    console.log(
-      `Swagger doc available at ⚠️  http://${HOST}:${PORT}/${SWAGGER_PREFIX} ⚠️`,
-    );
+    console.log(`Swagger doc available at ⚠️  http://${HOST}:${PORT}/${SWAGGER_PREFIX} ⚠️`);
   });
 }
 bootstrap();

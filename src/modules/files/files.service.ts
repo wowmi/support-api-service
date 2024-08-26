@@ -1,6 +1,5 @@
 import { BlobServiceClient, BlockBlobClient } from "@azure/storage-blob";
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { uuid } from "uuidv4";
 
 @Injectable()
@@ -11,12 +10,9 @@ export class AzureFileService {
   private async getBlobServiceInstance() {
     const connectionString = process.env.AZURE_CONNECTION_STRING;
     if (!connectionString) {
-      throw new InternalServerErrorException(
-        "Azure connection string is not defined",
-      );
+      throw new InternalServerErrorException("Azure connection string is not defined");
     }
-    const blobClientService =
-      await BlobServiceClient.fromConnectionString(connectionString);
+    const blobClientService = await BlobServiceClient.fromConnectionString(connectionString);
     return blobClientService;
   }
 
