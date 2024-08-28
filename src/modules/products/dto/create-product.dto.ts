@@ -1,14 +1,7 @@
 import { faker } from "@faker-js/faker/locale/af_ZA";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import {
-  ArrayNotEmpty,
-  IsArray,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateProductDto {
   @ApiProperty({
@@ -32,5 +25,6 @@ export class CreateProductDto {
     description: "Order in which item will be displayed on the list",
   })
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
   order: number;
 }

@@ -1,6 +1,7 @@
 import { IsString, IsOptional, IsUrl, IsUUID, IsInt } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from "@faker-js/faker";
+import { Transform } from "class-transformer";
 
 export class CreateContentDto {
   @ApiProperty({ example: faker.string.uuid() })
@@ -44,5 +45,6 @@ export class CreateContentDto {
 
   @ApiProperty({ example: 1 })
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
   order: number;
 }
