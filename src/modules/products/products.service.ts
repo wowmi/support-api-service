@@ -24,11 +24,7 @@ export class ProductsService {
     @Inject()
     private readonly fileService: AzureFileService,
   ) {}
-  async createProduct(
-    categoryId: string,
-    createProductDto: CreateProductDto,
-    image?: Express.Multer.File,
-  ) {
+  async createProduct(categoryId: string, createProductDto: CreateProductDto, image?: Express.Multer.File) {
     const category = await this.categoriesRepository.findOne({
       where: { id: categoryId },
     });
@@ -54,11 +50,7 @@ export class ProductsService {
     });
   }
 
-  async updateProduct(
-    id: string,
-    updateProductDto: UpdateProductDto,
-    image?: Express.Multer.File,
-  ) {
+  async updateProduct(id: string, updateProductDto: UpdateProductDto, image?: Express.Multer.File) {
     const product = await this.productsRepository.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
@@ -80,10 +72,7 @@ export class ProductsService {
     return this.productsRepository.delete({ id });
   }
 
-  async createCategory(
-    dto: CreateCategoryDto,
-    image?: Express.Multer.File,
-  ): Promise<ProductCategory> {
+  async createCategory(dto: CreateCategoryDto, image?: Express.Multer.File): Promise<ProductCategory> {
     const category = this.categoriesRepository.create(dto);
     if (image) {
       category.image = await this.fileService.uploadFile(image);
@@ -110,9 +99,7 @@ export class ProductsService {
     if (content) {
       return content;
     }
-    throw new NotFoundException(
-      `No content found for product with id ${productId}`,
-    );
+    throw new NotFoundException(`No content found for product with id ${productId}`);
   }
 
   async createProductContent(
@@ -132,9 +119,7 @@ export class ProductsService {
     if (updateContentDto.id) {
       content = product.content.find((c) => c.id === updateContentDto.id);
       if (!content) {
-        throw new NotFoundException(
-          `Content with ID ${updateContentDto.id} not found`,
-        );
+        throw new NotFoundException(`Content with ID ${updateContentDto.id} not found`);
       }
     } else {
       content = this.contentRepository.create();

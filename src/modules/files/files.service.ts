@@ -36,8 +36,15 @@ export class AzureFileService {
   }
 
   public async deleteFile(fileUrl: string) {
-    const blobName = fileUrl.split("/").pop();
-    const blockBlobClient = await this.getBlobClient(blobName);
-    await blockBlobClient.deleteIfExists();
+    if (fileUrl) {
+      const blobName = fileUrl.split("/").pop();
+      const blockBlobClient = await this.getBlobClient(blobName);
+      return await blockBlobClient.deleteIfExists();
+    }
+  }
+
+  public async deleteByFileName(fileName: string) {
+    const blockBlobClient = await this.getBlobClient(fileName);
+    return blockBlobClient.deleteIfExists();
   }
 }
