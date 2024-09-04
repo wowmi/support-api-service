@@ -38,9 +38,10 @@ export class CreateContentDto {
   @IsUrl()
   link_concatenated?: string;
 
-  @ApiProperty({ example: faker.string.uuid(), required: false })
+  @ApiProperty({ example: faker.number.int(), required: false })
   @IsOptional()
-  @IsUUID()
+  @IsInt()
+  @Transform(({ value }) => parseInt(value))
   content_id?: string;
 
   @ApiProperty({ example: 1 })

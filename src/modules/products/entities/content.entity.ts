@@ -46,8 +46,8 @@ export class ProductContent {
   @ApiProperty({ example: faker.internet.url() })
   link_concatenated: string;
 
-  @Column("text", { nullable: true })
-  @ApiProperty({ example: faker.string.uuid() })
+  @Column("int", { nullable: true })
+  @ApiProperty({ example: faker.number.int() })
   content_id: string;
 
   @Column("int")
