@@ -9,9 +9,9 @@ export class MarketUpdateTask {
   @ApiProperty({ example: faker.string.uuid() })
   id: string;
 
-  @Column("uuid")
-  @ApiProperty({ example: faker.string.uuid() })
-  content_id: string;
+  @Column("int")
+  @ApiProperty({ example: faker.number.int() })
+  content_id: number;
 
   @Column("text")
   @ApiProperty({ example: "Video" })

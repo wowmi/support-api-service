@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsUUID } from "class-validator";
+import { IsString, IsNotEmpty, IsUUID, IsIn, IsInt } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateMarketUpdateTaskDto {
@@ -6,6 +6,10 @@ export class CreateMarketUpdateTaskDto {
   @IsString()
   @IsNotEmpty()
   type: string;
+
+  @ApiProperty({ description: `For interraction with Boguslav's server` })
+  @IsInt()
+  content_id: number;
 
   @ApiProperty({ description: "The script of the task" })
   @IsString()
@@ -35,7 +39,7 @@ export class CreateMarketUpdateTaskDto {
   @ApiProperty({ description: "The concatenated link for the task" })
   @IsString()
   @IsNotEmpty()
-  link_concatenateated: string;
+  link_concatenated: string;
 
   @ApiProperty({ description: "The ID of the related market update" })
   @IsUUID()
