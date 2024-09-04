@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, IsUUID, IsIn, IsInt } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 
 export class CreateMarketUpdateTaskDto {
   @ApiProperty({ description: "The type of the task" })
@@ -9,6 +10,7 @@ export class CreateMarketUpdateTaskDto {
 
   @ApiProperty({ description: `For interraction with Boguslav's server` })
   @IsInt()
+  @Transform(({ value }) => parseInt(value))
   content_id: number;
 
   @ApiProperty({ description: "The script of the task" })
