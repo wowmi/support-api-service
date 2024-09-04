@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDateString } from "class-validator";
+import { IsString, IsNotEmpty, IsDateString, IsBoolean, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateMarketUpdateDto {
@@ -15,4 +15,9 @@ export class CreateMarketUpdateDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @ApiProperty({ description: "Whether archived or not" })
+  @IsBoolean()
+  @IsOptional()
+  isArchived: boolean;
 }
