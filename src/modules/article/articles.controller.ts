@@ -1,21 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ArticleService } from "./articles.service";
-import { CreateArticleDto } from "./articles.dto";
+import { CreateArticleDto, UpdateArticleDto } from "./articles.dto";
 import { Article } from "./articles.entity";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  BaseResponse,
-  withArrayBaseResponse,
-  withSingleBaseResponse,
-} from "src/helper/base-response.dto";
+import { BaseResponse, withArrayBaseResponse, withSingleBaseResponse } from "src/helper/base-response.dto";
 
 @ApiTags("Articles")
 @Controller("articles")
@@ -59,10 +47,7 @@ export class ArticleController {
     status: 200,
     type: withSingleBaseResponse<Article>(Article),
   })
-  async updateArticle(
-    @Param("id") id: string,
-    @Body() updateArticleDto: CreateArticleDto,
-  ) {
+  async updateArticle(@Param("id") id: string, @Body() updateArticleDto: UpdateArticleDto) {
     return await this.articleService.update(Number(id), updateArticleDto);
   }
 
@@ -98,9 +83,7 @@ export class ArticleController {
     status: 200,
     type: withArrayBaseResponse<Article>(Article),
   })
-  async findByKnowledge(
-    @Param("knowledgeId") knowledgeId: string,
-  ): Promise<BaseResponse<Article[]>> {
+  async findByKnowledge(@Param("knowledgeId") knowledgeId: string): Promise<BaseResponse<Article[]>> {
     return this.articleService.findByKnowledge(Number(knowledgeId));
   }
 }

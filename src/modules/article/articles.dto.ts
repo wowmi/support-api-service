@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { Knowledge } from "../knowledge/knowledge.entity";
 import { KnowledgeResponseDto } from "../knowledge/knowledge.dto";
@@ -31,6 +31,8 @@ export class CreateArticleDto extends ArticleDto {
   @ApiProperty()
   knowledgeId: number;
 }
+
+export class UpdateArticleDto extends PartialType(ArticleDto) {}
 
 export class ArticleResponseDto extends ArticleDto {
   @IsNumber()

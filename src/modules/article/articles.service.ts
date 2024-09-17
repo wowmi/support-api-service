@@ -3,11 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Article } from "./articles.entity";
 import { Knowledge } from "../knowledge/knowledge.entity";
-import {
-  withSingleBaseResponse,
-  withArrayBaseResponse,
-  BaseResponse,
-} from "src/helper/base-response.dto";
+import { withSingleBaseResponse, withArrayBaseResponse, BaseResponse } from "src/helper/base-response.dto";
+import { UpdateArticleDto } from "./articles.dto";
 
 @Injectable()
 export class ArticleService {
@@ -32,19 +29,11 @@ export class ArticleService {
   async findByKnowledge(knowledgeId: number): Promise<BaseResponse<Article[]>> {
     const articles = await this.articleRepository
       .createQueryBuilder("article")
-      .innerJoin(
-        "article.knowledge",
-        "knowledge",
-        "knowledge.id = :knowledgeId",
-        { knowledgeId },
-      )
+      .innerJoin("article.knowledge", "knowledge", "knowledge.id = :knowledgeId", { knowledgeId })
       .getMany();
 
     if (!articles.length) {
-      throw new HttpException(
-        `No articles found for knowledge with id ${knowledgeId}`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`No articles found for knowledge with id ${knowledgeId}`, HttpStatus.NOT_FOUND);
     }
     const responseDto = withArrayBaseResponse(Article);
     return new responseDto(true, 200, "Fetched Successfully", articles);
@@ -60,18 +49,12 @@ export class ArticleService {
     await this.articleRepository.delete(id);
   }
 
-  async create(
-    article: Partial<Article>,
-    knowledgeId: number,
-  ): Promise<BaseResponse<Article>> {
+  async create(article: Partial<Article>, knowledgeId: number): Promise<BaseResponse<Article>> {
     const knowledge = await this.knowledgeRepository.findOne({
       where: { id: knowledgeId },
     });
     if (!knowledge) {
-      throw new HttpException(
-        `Knowledge with id ${knowledgeId} not found`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Knowledge with id ${knowledgeId} not found`, HttpStatus.NOT_FOUND);
     }
 
     // Create the new article from the given object
@@ -88,32 +71,12 @@ export class ArticleService {
     return new responseDto(true, 201, "Created Successfully", savedArticle);
   }
 
-  async update(
-    id: number,
-    updatedArticle: { knowledgeId: number; [key: string]: any },
-  ): Promise<BaseResponse<Article>> {
+  async update(id: number, updatedArticle: UpdateArticleDto): Promise<BaseResponse<Article>> {
     const articleToUpdate = await this.articleRepository.findOne({
       where: { id },
     });
     if (!articleToUpdate) {
-      throw new HttpException(
-        `Article with id ${id} not found`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
-
-    if (updatedArticle.knowledgeId) {
-      const knowledge = await this.knowledgeRepository.findOne({
-        where: { id: updatedArticle.knowledgeId },
-      });
-      if (!knowledge) {
-        throw new HttpException(
-          `Knowledge with id ${updatedArticle.knowledgeId} not found`,
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      delete updatedArticle.knowledgeId;
-      articleToUpdate.knowledge = knowledge;
+      throw new HttpException(`Article with id ${id} not found`, HttpStatus.NOT_FOUND);
     }
 
     Object.assign(articleToUpdate, updatedArticle);
