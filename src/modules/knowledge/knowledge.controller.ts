@@ -1,22 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UploadedFile,
-  UseInterceptors,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { CreateKnowledgeDto } from "./knowledge.dto";
 import { KnowledgeService } from "./knowledge.service";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  BaseResponse,
-  withArrayBaseResponse,
-  withSingleBaseResponse,
-} from "src/helper/base-response.dto";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { BaseResponse, withArrayBaseResponse, withSingleBaseResponse } from "src/helper/base-response.dto";
 import { Knowledge } from "./knowledge.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Express } from "express";
@@ -39,8 +25,6 @@ export class KnowledgeController {
     dto: CreateKnowledgeDto,
     @UploadedFile() icon: Express.Multer.File,
   ): Promise<BaseResponse<Knowledge>> {
-    console.log("Received DTO:", dto);
-    console.log("Received file:", icon);
     if (icon) {
       return await this.knowledgeService.create(dto, icon);
     }

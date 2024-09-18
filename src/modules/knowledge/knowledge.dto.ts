@@ -1,16 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNumber, IsOptional } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 import { ArticleBaseDto, ArticleResponseDto } from "../article/articles.dto";
 
 export class CreateKnowledgeDto {
-  @ApiPropertyOptional()
+  @IsString()
+  @ApiProperty()
   title: string;
 
-  @ApiPropertyOptional()
+  @IsString()
+  @ApiProperty()
   description: string;
-
-  // @ApiPropertyOptional()
-  // icon: string;
 }
 
 export class KnowledgeResponseDto extends CreateKnowledgeDto {
