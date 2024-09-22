@@ -14,15 +14,7 @@ import {
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { Product } from "./entities/product.entity";
 import { ProductCategory } from "./entities/product_categories.entity";
@@ -92,8 +84,7 @@ export class ProductsController {
   @UseInterceptors(FileInterceptor("image"))
   @ApiOperation({
     summary: "Create product",
-    description:
-      "Creates a new product and assigns it to the specified category.",
+    description: "Creates a new product and assigns it to the specified category.",
   })
   @ApiQuery({
     name: "category_id",
@@ -126,7 +117,7 @@ export class ProductsController {
     @Query("category_id") categoryId: string,
     @Body() createProductDto: CreateProductDto,
   ) {
-    return this.productsService.createProduct(categoryId, createProductDto);
+    return this.productsService.createProduct(categoryId, createProductDto, image);
   }
 
   @Post("/category")
@@ -153,10 +144,7 @@ export class ProductsController {
       },
     },
   })
-  createCategory(
-    @UploadedFile() image: Express.Multer.File,
-    @Body() createCategoryDto: CreateCategoryDto,
-  ) {
+  createCategory(@UploadedFile() image: Express.Multer.File, @Body() createCategoryDto: CreateCategoryDto) {
     return this.productsService.createCategory(createCategoryDto, image);
   }
 
@@ -189,11 +177,7 @@ export class ProductsController {
     @Param("category_id") categoryId: string,
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
-    return this.productsService.updateCategory(
-      categoryId,
-      createCategoryDto,
-      image,
-    );
+    return this.productsService.updateCategory(categoryId, createCategoryDto, image);
   }
 
   @Put(":id")
@@ -303,11 +287,7 @@ export class ProductsController {
     @Body() updateContentDto: CreateContentDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
-    return this.productsService.createProductContent(
-      id,
-      updateContentDto,
-      image,
-    );
+    return this.productsService.createProductContent(id, updateContentDto, image);
   }
 
   @Put("content/:content_id")
@@ -345,10 +325,6 @@ export class ProductsController {
     @Body() updateContentDto: CreateContentDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
-    return this.productsService.updateProductContent(
-      id,
-      updateContentDto,
-      image,
-    );
+    return this.productsService.updateProductContent(id, updateContentDto, image);
   }
 }
